@@ -1,0 +1,23 @@
+{
+  "name": "nasdaq-sp500-news-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Bot de noticias de Nasdaq 100 y S&P 500 para Discord (Vercel Hobby + GitHub Actions + Supabase Free + Claude)",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.ts",
+    "register-commands": "tsx --env-file=.env scripts/register-commands.ts"
+  },
+  "dependencies": {
+    "@vercel/functions": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
