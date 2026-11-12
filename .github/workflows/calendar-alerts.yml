@@ -1,0 +1,32 @@
+name: Calendario y alertas (cada 5 minutos)
+
+# Refresca el calendario como mucho una vez por hora y avisa de los eventos de alto
+# impacto que ocurren en los próximos 30 minutos. Si GitHub se retrasa, el aviso
+# puede llegar con menos antelación.
+on:
+  schedule:
+    - cron: "4-59/5 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: calendar-alerts
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Llamar al endpoint del calendario
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          curl --silent --show-error --fail-with-body \
+            --max-time 90 --retry 2 --retry-delay 5 --retry-all-errors \
+            -X POST "${APP_URL%/}/api/jobs/calendar" \
+            -H "Authorization: Bearer ${CRON_SECRET}"
+          echo
